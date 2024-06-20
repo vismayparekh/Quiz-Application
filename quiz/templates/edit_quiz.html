@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Quiz</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h2 {
+            text-align: center;
+            color: #000000;
+            margin-bottom: 20px;
+        }
+
+        form {
+            max-width: 800px;
+            background-color: #f4f4f4;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(154, 210, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+            color: #000000;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #b4d0ff;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #2196f3;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            margin-bottom: 10px; /* Added margin */
+        }
+
+        button:hover {
+            background-color: #0d47a1;
+        }
+
+        .question {
+            border: 1px solid #788186;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .question label {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #000000;
+        }
+
+        .choices input {
+            width: calc(100% - 22px);
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #b4d0ff;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .choices input:last-child {
+            margin-bottom: 0;
+        }
+
+        .remove-button {
+            background-color: #d32f2f;
+            color: #fff;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        .remove-button:hover {
+            background-color: #b71c1c;
+        }
+    </style>
+</head>
+<body>
+
+    <form method="post" action="{% url 'quiz:edit_quiz' quiz.id %}">
+        <h2>Edit Quiz</h2>
+        {% csrf_token %}
+        
+        <!-- Edit quiz name -->
+        <label for="quiz_name">Quiz Name:</label>
+        <input type="text" name="quiz_name" value="{{ quiz.QuizName }}" required>
+        <br>
+
+        <!-- Edit deadline -->
+        <label for="deadline">Deadline:</label>
+        <input type="datetime-local" name="deadline" value="{{ quiz.Deadline|date:'Y-m-d\TH:i:s' }}" required>
+        <br>
+
+        <!-- Edit max attempts -->
+        <label for="max_attempts">Max Attempts:</label>
+        <input type="number" name="max_attempts" value="{{ quiz.MaxAttempts }}" required>
+        <br>
+
+        <!-- Display existing questions for editing -->
+        <div id="questions-container">
+            {% for question in quiz.question_set.all %}
+                <div class="question">
+                    <label for="questions[]">Question:</label>
+                    <input type="text" name="questions[]" value="{{ question.Ques }}" required>
+                    <br>
+
+                    <!-- Display existing choices for editing -->
+                    {% for choice in question.choice_set.all %}
+                        <label for="choices[]">Choice:</label>
+                        <input type="text" name="choices[]" value="{{ choice.Choices1 }}" required>
+                        <input type="text" name="choices[]" value="{{ choice.Choices2 }}" required>
+                        <input type="text" name="choices[]" value="{{ choice.Choices3 }}" required>
+                        <input type="text" name="choices[]" value="{{ choice.Choices4 }}" required>
+                        <br>
+                    {% endfor %}
+
+                    <!-- Display existing answer for editing -->
+                    <label for="answers[]">Correct Answer:</label>
+                    <input type="text" name="answers[]" value="{{ question.answer.Ans }}" required>
+                    <!-- Input to mark the question for deletion -->
+                    <input type="hidden" name="delete_question[]" value="{{ question.id }}">
+                    <!-- Button to remove the question -->
+                    <button type="button" class="remove-button" onclick="removeQuestion(this)">Remove Question</button>
+                    <br>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Button to add more questions -->
+        <button type="button" onclick="addQuestion()">Add Question</button>
+        <br>
+        <br>
+        <input type="submit" value="Save Changes">
+        <br>
+        <br>
+        <a href="{% url 'quiz:teacher_dashboard' TeacherID=teacher_id %}">Cancel</a>
+
+    </form>
+    <script>
+        function addQuestion() {
+            var container = document.getElementById('questions-container');
+            var questionCount = container.getElementsByClassName('question').length;
+
+            var newQuestion = document.createElement('div');
+            newQuestion.className = 'question';
+
+            newQuestion.innerHTML = `
+                <label for="questions_${questionCount}">Question:</label>
+                <input type="text" name="questions[]" required>
+                <br>
+
+                <label for="choices_${questionCount}">Choices:</label>
+                <input type="text" name="choices[]" required>
+                <input type="text" name="choices[]" required>
+                <input type="text" name="choices[]" required>
+                <input type="text" name="choices[]" required>
+                <br>
+
+                <label for="answers_${questionCount}">Answer:</label>
+                <input type="text" name="answers[]" required>
+                <!-- Button to remove the question -->
+                <button type="button" class="remove-button" onclick="removeQuestion(this)">Remove Question</button>
+            `;
+
+            container.appendChild(newQuestion);
+        }
+
+        function removeQuestion(button) {
+            var container = document.getElementById('questions-container');
+            container.removeChild(button.parentNode);
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ quiz.QuizName }}</title>
+    <!-- Add your styles here -->
+</head>
+<body>
+    <h1>{{ quiz.QuizName }}</h1>
+
+    <p>Teacher ID: {{ quiz.TID.TeacherID }}</p>
+    <p>Subject: {{ quiz.TID.Subject }}</p>
+    <p>Max Attempts: {{ quiz.MaxAttempts }}</p>
+    <p>Deadline: {{ quiz.Deadline }}</p>
+
+    <h2>Questions</h2>
+    {% for question_detail in question_details %}
+        <div>
+            <p>{{ question_detail.question.Ques }}</p>
+            <ul>
+                {% for choice in question_detail.choices %}
+                    <li>{{ choice.Choices1 }}</li>
+                    <li>{{ choice.Choices2 }}</li>
+                    <li>{{ choice.Choices3 }}</li>
+                    <li>{{ choice.Choices4 }}</li>
+                {% endfor %}
+            </ul>
+            <p>Correct Answer: {{ question_detail.answer.Ans }}</p>
+        </div>
+    {% endfor %}
+    
+    <!-- Add more details as needed -->
+
+</body>
+</html>

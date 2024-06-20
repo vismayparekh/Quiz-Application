@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teachers Page</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('https://i.pinimg.com/736x/18/51/a7/1851a7a2a83f1d3f05db1b0d22d19a49.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 70vh;
+        }
+
+        h1 {
+            color: #fff;
+            text-align: center;
+            font-size: 66px;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background-color: #BCC6CC;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #000000;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: #4caf50;
+        }
+
+        input[type="submit"] {
+            background-color: #0002FF;
+            color: #fff;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0002FF;
+        }
+
+        section {
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        p {
+            color: #fff;
+            text-align: center;
+        }
+
+        div {
+            text-align: center;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        button {
+            background-color: #0002FF;
+            color: #fff;
+            padding: 20px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            width: 150px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0002FF;
+        }
+    </style>
+</head>
+<body>
+    <h1>Teacher Registration  /  Login</h1>
+
+    {% if form.errors %}
+        <div style="color: red; text-align: center;">
+            <p>Error in the form:</p>
+            <ul>
+                {% for error in form.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+
+        <!-- Teacher Registration Form Fields -->
+        <label for="id_TeacherFirstName">First Name:</label>
+        <input type="text" id="id_TeacherFirstName" name="TeacherFirstName" required>
+
+        <label for="id_TeacherLastName">Last Name:</label>
+        <input type="text" id="id_TeacherLastName" name="TeacherLastName" required>
+
+        <label for="id_TeacherUsername">Username:</label>
+        <input type="text" id="id_TeacherUsername" name="TeacherUsername" required>
+
+        <label for="id_TeacherPassword">Password:</label>
+        <input type="password" id="id_TeacherPassword" name="TeacherPassword" required>
+
+        <label for="id_Subject">Subject:</label>
+        <input type="text" id="id_Subject" name="Subject" required>
+
+        <input type="submit" value="Register">
+    </form>
+
+    <!-- Login Button -->
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'quiz:LoginTeacher' %}">
+            <button>Login</button>
+        </a>
+    </div>
+
+    {% if TeacherID %}
+        <p style="text-align: center;">Thank you for registering! Your Teacher ID is: {{ TeacherID }}</p>
+    {% endif %}
+    {% if message %}
+        <p style="text-align: center;">{{ message }}</p>
+    {% endif %}
+</body>
+</html>

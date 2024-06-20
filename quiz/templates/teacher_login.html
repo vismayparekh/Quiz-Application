@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Login</title>
+    <!-- Add any additional CSS styles or links to external stylesheets here -->
+
+<style>
+
+body {
+  background-color: #333;
+  color: #fff;
+  font-family: Arial, sans-serif;
+}
+
+h2 {
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 2em;
+}
+
+form {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 30px;
+  background-color: #222;
+  border-radius: 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 1.2em;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background-color: #444;
+  color: #fff;
+}
+
+button[type="submit"] {
+  display: block;
+  width: 100%;
+  margin-top: 20px; 
+  padding: 10px;
+  background-color: #6ab04c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+
+p {
+  color: #6ab04c;
+  text-align: center;
+}
+
+</style>
+
+</head>
+<body>
+    <div>
+        <h2>Teacher Login</h2>
+        {% if message %}
+            <p>{{ message }}</p>
+        {% endif %}
+        <form method="post" action="{% if teacher %}{% url 'quiz:teacher_dashboard' TeacherID=teacher.TeacherID %}{% endif %}">
+            {% csrf_token %}
+            <label for="TeacherUsername">Username:</label>
+            <input type="text" name="TeacherUsername" required><br>
+
+            <label for="TeacherPassword">Password:</label>
+            <input type="password" name="TeacherPassword" required><br>
+
+            <button type="submit">Login</button>
+        </form>
+  
+    </div>
+</body>
+</html>

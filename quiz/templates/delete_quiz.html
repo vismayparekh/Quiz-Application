@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Quiz</title>
+    <!-- Add any additional stylesheets or scripts as needed -->
+</head>
+<body>
+
+<!-- Display confirmation message -->
+<h2>Delete Quiz</h2>
+<p>Are you sure you want to delete the quiz "{{ quiz.QuizName }}"?</p>
+
+<!-- Confirm or cancel the deletion -->
+<form method="post" action="{% url 'quiz:delete_quiz' quiz_id=quiz.id teacher_id=quiz.TID.TeacherID %}">
+    {% csrf_token %}
+    <input type="submit" value="Confirm Delete">
+    <a href="{% url 'quiz:delete_quiz' quiz_id=quiz.id teacher_id=quiz.TID.TeacherID %}">Cancel</a>
+</form>
+
+</body>
+</html>

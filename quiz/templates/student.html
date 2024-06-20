@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Page</title>
+    <link rel="stylesheet" href="path/to/config.css">
+    <style>
+        body {
+            background-color: #2c3338;
+            color: #fff;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 16px;
+            line-height: 1.6;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .form-container {
+            background-color: #363b41;
+            border-radius: 45px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .form__field {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        .form__label {
+            background-color: #363b41;
+            border-radius: 46px;
+            padding: 10px;
+            text-align: left;
+            margin-bottom: 8px;
+        }
+
+        .form__input {
+            width: 85%;
+            padding: 12px;
+            border: 1px solid #5D6D7E;
+            border-radius: 93px;
+            background-color: #3b4148;
+            color: #fff;
+            transition: background-color 0.3s;
+        }
+
+        .form__input:focus,
+        .form__input:hover {
+            background-color: #434a52;
+        }
+
+        .form__submit {
+            background-color: #F42249;
+            color: #eee;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .form__submit:focus,
+        .form__submit:hover {
+            background-color: #ea4c88;
+        }
+
+        .login__button {
+            background-color: #F42249;
+            color: white;
+            padding: 12px 20px;
+            border: bottom;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .login__button:hover {
+            background-color: #ea4c88;
+        }
+
+        .response {
+            text-align: center;
+            margin-top: 20px;
+            color: #aaffaa;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>STUDENT REGISTRATION</h1>
+
+        <form class="form" method="post">
+            {% csrf_token %}
+            <div class="form__field">
+                <label class="form__label" for="id_StuFirstName">First Name:</label>
+                <input class="form__input" type="text" id="id_StuFirstName" name="StuFirstName" required>
+            </div>
+
+            <div class="form__field">
+                <label class="form__label" for="id_StuLastName">Last Name:</label>
+                <input class="form__input" type="text" id="id_StuLastName" name="StuLastName" required>
+            </div>
+
+            <div class="form__field">
+                <label class="form__label" for="id_StuUsername">Username:</label>
+                <input class="form__input" type="text" id="id_StuUsername" name="StuUsername" required>
+            </div>
+
+            <div class="form__field">
+                <label class="form__label" for="id_StuPassword">Password:</label>
+                <input class="form__input" type="password" id="id_StuPassword" name="StuPassword" required>
+            </div>
+
+            <input class="form__submit" type="submit" value="Register">
+            <div>
+                <a href="{% url 'quiz:LoginStudent' %}" class="login__button">Login</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Login Button -->
+   
+    <img src="https://www.dummydevelopers.com/girl-bro.svg" alt="Quiz Image">
+
+    {% if StuID %}
+    <p class="response">Thank you for registering! Your Student ID is: {{ StuID }}</p>
+    {% endif %}
+    {% if message %}
+    <p class="response">{{ message }}</p>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://img.freepik.com/free-photo/yellow-orange-black-geometric-background_23-2147696394.jpg?size=626&ext=jpg&ga=GA1.1.1464956790.1701330360&semt=ais');
+            padding: 20px;
+            background-size: 99em;
+            background-color: #fff;
+            color: #333; /* Default text color for body */
+        }
+
+        h2 {
+            color: #222; /* Orange color for h2 */
+        }
+
+        h3 {
+            color: #222; /* Green color for h3 */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #333;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            color: #fff; /* Text color for table */
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 0px solid #ddd;
+        }
+
+        th {
+            background-color: #333;
+        }
+
+        .action-links {
+            text-align: center;
+        }
+
+        .take-quiz-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #EEC63B; /* Peach shade */
+            color: #222; /* Darker text color for better readability */
+            text-decoration: none;
+            border-radius: 55px;
+            transition: background-color 0.3s;
+        }
+
+        .take-quiz-link:hover {
+            background-color: #FFB6C1; /* Darker shade on hover */
+        }
+
+        .results-table {
+            width: 100%; /* Adjust width as needed */
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .results-table th, .results-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+
+        .results-table th {
+            background-color: #333;
+        }
+
+        .results-table tbody {
+            background-color: #333;
+        }
+
+        .no-results-message {
+            text-align: center;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div>
+        <h2>Welcome, {{ student.StuFirstName }} {{ student.StuLastName }}!</h2>
+
+        <h3>Available Quizzes:</h3>
+        <!-- Display quizzes in a table with an action column -->
+        <!-- Display quizzes in a table with an action column -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Quiz Name</th>
+                    <th>Number of Attempts</th>
+                    <th>Deadline</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                {% for quiz in quizzes %}
+                <tr>
+                    <td>{{ quiz.Subject }}</td>
+                    <td>{{ quiz.QuizName }}</td>
+                    <td>
+                        {% if quiz.QuizName in max_attempts_dict %}
+                            {{ max_attempts_dict.quiz.QuizName }}
+                        {% else %}
+                            {{ quiz.MaxAttempts }}
+                        {% endif %}
+                    </td>
+                    <td>{{ quiz.Deadline }}</td>
+                    <td class="action-links">
+                        <a class="take-quiz-link" href="{% url 'quiz:take_quiz' stu_id=StuID quiz_name=quiz.QuizName %}">
+                            Take Quiz
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+        <!-- Display quiz results -->
+<!-- Display quiz results -->
+<h3>Quiz Results:</h3>
+{% if results %}
+    <table class="results-table">
+        <thead>
+            <tr>
+                <th>Quiz Name</th>
+                <th>Score</th>
+                <th>Date and Time</th>
+                <th>Attempts</th>
+                <th>Max Attempts</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in results %}
+                <tr>
+                    <td>{{ result.Qname.QuizName }}</td>
+                    <td>{{ result.Score }}</td>
+                    <td>{{ result.DateTime }}</td>
+                    <td>{{ result.attempts }}</td>
+                    <td>{{ result.max_attempts }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p class="no-results-message">No quiz results available.</p>
+{% endif %}
+
+    </div>
+
+</body>
+</html>
